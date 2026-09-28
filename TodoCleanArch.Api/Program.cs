@@ -4,27 +4,35 @@ using TodoCleanArch.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ۱. اضافه کردن سرویس‌های کنترلر و سواگر
+// ۱. تنظیم سیاست CORS برای دسترسی فرانت‌اند
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// ۲. اضافه کردن سرویس‌های کنترلر و سواگر
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ۲. رجیستر کردن سرویس‌های لایه Application (MediatR و هندلرها)
+// ۳. رجیستر سرویس‌های Application و Infrastructure
 builder.Services.AddApplicationServices();
-
-// ۳. رجیستر کردن سرویس‌های لایه Infrastructure (DbContext و ریپازیتوری‌ها با SQLite)
 builder.Services.AddInfrastructureServices("Data Source=todos.db");
 
 var app = builder.Build();
 
-// ۴. ساخت خودکار فایل و جدول دیتابیس در زمان اجرای برنامه
+// ۴. ساخت خودکار جداول دیتابیس
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<TodoDbContext>();
     dbContext.Database.EnsureCreated();
 }
 
-// ۵. پایپ‌لاین اجرای برنامه و Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -32,6 +40,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// ۵. استفاده از خط مشی CORS (حتماً قبل از MapControllers و UseAuthorization باشد)
+app.UseCors("AllowReactApp");
+
 app.UseAuthorization();
 app.MapControllers();
 
