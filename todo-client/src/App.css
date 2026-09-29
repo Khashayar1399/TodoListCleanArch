@@ -24,33 +24,32 @@ body {
   min-height: 100vh;
   background: var(--bg-gradient);
   background-attachment: fixed;
-  font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
   color: var(--text-primary);
   direction: rtl;
   display: flex;
-  justify-content: center;
-  padding: 30px 16px;
+  align-items: center;      /* تراز در وسط عمودی */
+  justify-content: center;   /* تراز در وسط افقی */
+  padding: 40px 16px;
 }
 
 .dashboard-wrapper {
   width: 100%;
-  max-width: 780px;
+  max-width: 720px;
+  margin: auto;             /* تضمین قرارگیری در مرکز */
 }
-
 /* هدر اصلی */
 .app-header {
   text-align: center;
-  color: #fff;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .app-header h1 {
-  font-size: 2.2rem;
+  font-size: 2.1rem;
   font-weight: 800;
-  margin: 0 0 8px 0;
-  background: linear-gradient(90deg, #a5b4fc, #e0e7ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  margin: 0;
+  color: #f8fafc;           /* رنگ سفید کاملاً درخشان و یکدست */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* سایه ملایم و شیک */
 }
 
 .app-header p {

@@ -100,7 +100,6 @@ export function App() {
       {/* هدر */}
       <header className="app-header">
         <h1>مدیریت وظایف کاری</h1>
-        <p>.NET 8 Clean Architecture (CQRS) + React & Vite</p>
       </header>
 
       {/* خلاصه وضعیت */}
