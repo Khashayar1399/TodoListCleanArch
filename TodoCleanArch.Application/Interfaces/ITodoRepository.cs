@@ -1,12 +1,12 @@
-﻿using TodoList.Domain.Entities;
+﻿using TodoCleanArch.Domain.Entities;
 
 namespace TodoCleanArch.Application.Interfaces;
 
 public interface ITodoRepository
 {
-    Task<TodoItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<TodoItem>> GetAllAsync(CancellationToken cancellationToken = default);
-    Task AddAsync(TodoItem todo, CancellationToken cancellationToken = default);
-    Task UpdateAsync(TodoItem todo, CancellationToken cancellationToken = default);
-    Task DeleteAsync(TodoItem todo, CancellationToken cancellationToken = default);
+    Task<IReadOnlyList<TodoList>> GetAllAsync(CancellationToken cancellationToken = default);
+    Task<TodoList?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task AddAsync(TodoList item, CancellationToken cancellationToken = default);
+    Task UpdateAsync(TodoList item, CancellationToken cancellationToken = default);
+    Task DeleteAsync(TodoList item, CancellationToken cancellationToken = default);
 }

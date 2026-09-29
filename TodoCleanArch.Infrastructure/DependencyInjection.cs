@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using TodoCleanArch.Application.Interfaces;
 using TodoCleanArch.Infrastructure.Data;
-using TodoCleanArch.Infrastructure.Repositories;
+using TodoCleanArch.Infrastructure.Data;
 
 namespace TodoCleanArch.Infrastructure;
 

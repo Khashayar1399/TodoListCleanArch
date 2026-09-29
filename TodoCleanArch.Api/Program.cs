@@ -9,9 +9,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000")
+        policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod(); // این متدهای PUT, PATCH, DELETE را مجاز می‌کند
     });
 });
 
@@ -44,6 +44,7 @@ app.UseHttpsRedirection();
 // ۵. استفاده از خط مشی CORS (حتماً قبل از MapControllers و UseAuthorization باشد)
 app.UseCors("AllowReactApp");
 
+app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 

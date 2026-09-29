@@ -4,10 +4,8 @@ using TodoCleanArch.Application.Interfaces;
 
 namespace TodoCleanArch.Application.Todos.Queries;
 
-// درخواست دریافت تمام تسک‌ها
 public record GetTodosQuery : IRequest<IReadOnlyList<TodoDto>>;
 
-// هندلر مسئول دریافت و تبدیل داده‌ها به DTO
 public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, IReadOnlyList<TodoDto>>
 {
     private readonly ITodoRepository _repository;
@@ -19,15 +17,14 @@ public class GetTodosQueryHandler : IRequestHandler<GetTodosQuery, IReadOnlyList
 
     public async Task<IReadOnlyList<TodoDto>> Handle(GetTodosQuery request, CancellationToken cancellationToken)
     {
-        var items = await _repository.GetAllAsync(cancellationToken);
-
-        // نگاشت به DTO
-        return items.Select(x => new TodoDto(
-            x.Id,
-            x.Title,
-            x.Description,
-            x.IsCompleted,
-            x.CreatedAt
+        var list = await _repository.GetAllAsync(cancellationToken);
+        return list.Select(t => new TodoDto(
+            t.Id,
+            t.Title,
+            t.Description,
+            t.IsCompleted,
+            t.CreatedAt,
+            t.DueDate
         )).ToList();
     }
 }

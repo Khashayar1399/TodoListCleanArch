@@ -17,7 +17,6 @@ public class TodosController : ControllerBase
         _sender = sender;
     }
 
-    // دریافت لیست همه تسک‌ها
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<TodoDto>>> GetAll(CancellationToken cancellationToken)
     {
@@ -25,15 +24,39 @@ public class TodosController : ControllerBase
         return Ok(result);
     }
 
-    // ثبت یک تسک جدید
     [HttpPost]
     public async Task<ActionResult<Guid>> Create([FromBody] CreateTodoRequest request, CancellationToken cancellationToken)
     {
-        var command = new CreateTodoCommand(request.Title, request.Description);
+        var command = new CreateTodoCommand(request.Title, request.Description, request.DueDate);
         var id = await _sender.Send(command, cancellationToken);
-        return CreatedAtAction(nameof(GetAll), new { id }, id);
+        return Ok(id);
+    }
+
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTodoRequest request, CancellationToken cancellationToken)
+    {
+        var command = new UpdateTodoCommand(id, request.Title, request.Description, request.DueDate);
+        var result = await _sender.Send(command, cancellationToken);
+        if (!result) return NotFound();
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}/toggle")]
+    public async Task<IActionResult> Toggle(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new ToggleTodoCommand(id), cancellationToken);
+        if (!result) return NotFound();
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new DeleteTodoCommand(id), cancellationToken);
+        if (!result) return NotFound();
+        return NoContent();
     }
 }
 
-// مدل ورودی برای درخواست کلاینت
-public record CreateTodoRequest(string Title, string? Description);
+public record CreateTodoRequest(string Title, string? Description, DateTime? DueDate);
+public record UpdateTodoRequest(string Title, string? Description, DateTime? DueDate);
